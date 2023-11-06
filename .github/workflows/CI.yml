@@ -27,7 +27,7 @@ jobs:
         arch:
           - x64
     steps:
-      - run: julia --project=. -e 'using Pkg; Pkg.add(url="https://github.com/loganhotz/LazilyInitializedFields.jl"); Pkg.instantiate()'
+      - run: julia --project=. -e 'using Pkg; Pkg.add(url="https://github.com/loganhotz/LazilyInitializedFields.jl", rev="master"); Pkg.instantiate()'
       - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1
         with:
