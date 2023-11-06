@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Pkg.add("CompatHelper")
         run: julia -e 'using Pkg; Pkg.add("CompatHelper")'
+      - name: Install LazilyInitializedFields branch
+        run: julia --project=. -e 'using Pkg; pkg"add LazilyInitializedFields#489be6b"; Pkg.instantiate()'
       - name: CompatHelper.main()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
