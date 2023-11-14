@@ -21,7 +21,6 @@ import ShiftedArrays: lag
 # VectorAutoRegressions.jl
 export AbstractVectorAutoRegression,
        # miscellany
-       Unlagged,
        VariableID
 
 # model.jl
@@ -72,6 +71,8 @@ export L,
 
 # impulse.jl
 export ImpulseResponse,
+       # impulse response interface
+       model,
        # responses
        ResponseKind,
        ReducedForm,
@@ -98,26 +99,6 @@ export drop_missing_observations,
 Abstract supertype for vector autoregressions with `P` lags
 """
 abstract type AbstractVectorAutoRegression{P} <: StatisticalModel end
-
-
-
-"""
-    UnLagged
-
-representation of a model that hasn't had its lag set
-"""
-struct UnLagged end
-const LagType = Union{UnLagged, <:Integer}
-const NoLag   = UnLagged()
-struct LagError <: Exception; msg::String; end
-LagError() = LagError("")
-function Base.show(io::IO, e::LagError)
-    if e.msg == ""
-        print(io, "model does not have assigned lag")
-    else
-        print(io, e.msg)
-    end
-end
 
 
 
