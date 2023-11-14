@@ -25,7 +25,8 @@ function Base.show(io::IO, ::MIME"text/plain", m::AbstractVectorAutoRegression{P
 end
 
 
-@lazy mutable struct VectorAutoRegression{P} <: AbstractVectorAutoRegression{P}
+
+@lazy struct VectorAutoRegression{P} <: AbstractVectorAutoRegression{P}
     formula::FormulaTerm
     vars::VectorRegressor
 
@@ -40,6 +41,28 @@ end
 end
 const VAR = VectorAutoRegression
 
+"""
+    VectorAutoRegression{P} <: AbstractVectorAutoRegression{P}
+
+A representation of a vector autoregression model with `P` lags. To construct a VAR, the
+[`@var`](@ref) macro is the recommended interface. To estimate the model, one can estimate
+the model directly with
+
+```julia-repl
+julia> var = @var(y ~ 1 + L(y, 4), y ≡ [infl, urate, ffr])
+julia> df  = load_data() # some user-defined data retrieval
+julia> fit!(var, df)
+```
+
+Alternatively, one can directly give the model some data, then estimate:
+
+```julia-repl
+julia> assign_data!(var, df)
+julia> fit!(var)
+```
+
+See also [`fit!`](@ref), [`assign_data!`](@ref)
+"""
 function VectorAutoRegression(f::FormulaTerm, v::VectorRegressor)
     return VectorAutoRegression{maximum_lag(f)}(f, v,
                                                 uninit, uninit, uninit, uninit, uninit,

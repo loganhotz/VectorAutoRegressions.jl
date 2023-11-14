@@ -3,6 +3,11 @@ Enforcing structural restrictions
 """
 
 
+"""
+    AbstractStructuralVectorAutoRegression{P} <: AbstractVectorAutoRegression{P}
+
+Abstract supertype for structural VARs. Aliased as `AbstractSVAR`
+"""
 abstract type AbstractStructuralVectorAutoRegression{P} <: AbstractVectorAutoRegression{P} end
 const AbstractSVAR = AbstractStructuralVectorAutoRegression
 
@@ -27,6 +32,23 @@ const AbstractSVAR = AbstractStructuralVectorAutoRegression
 end
 const SVAR = StructuralVectorAutoRegression
 
+"""
+    StructuralVectorAutoRegression{P} <: AbstractStructuralVectorAutoRegression{P}
+
+A representation of a structural VAR. To create a SVAR, use the `@var` macro.
+
+# Examples
+To create the backward-looking Taylor-rule VAR from Stock and Watson (2001), one should
+run the following code:
+
+```julia-repl
+julia> include("data/manager.jl") # exposes some data retrieval codes
+julia> df = load_data(:sw2001)
+julia> svar = @var(y ~ 1 + L(y, 4),
+                   y ≡ [gdpd, urate, ffr],
+                   ffr => ffr - sma(gdpd, 4) - sma(urate, 4) = 1 + L(y, 4))
+```
+"""
 function StructuralVectorAutoRegression(f::FormulaTerm, v::VectorRegressor, r::Rule)
     return StructuralVectorAutoRegression{maximum_lag(f)}(f, v, r,
                                                           uninit, uninit, uninit, uninit,
