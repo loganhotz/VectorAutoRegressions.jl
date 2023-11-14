@@ -12,7 +12,7 @@ struct Structural  <: ResponseKind end
 
 representation of an impulse reponse for a VAR of type `T`. `R` is either
 - `Orthogonal`, or
-` `ReducedForm`
+- `ReducedForm`
 """
 struct ImpulseResponse{R<:ResponseKind, T<:AbstractVectorAutoRegression}
     model::T
